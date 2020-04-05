@@ -6,6 +6,7 @@ import ProfileScreen from './src/screen/ProfileScreen';
 import EmployeeScreen from './src/test/EmployeeScreen';
 import {NavigationContainer} from '@react-navigation/native'
 import {createStackNavigator} from '@react-navigation/stack'
+import EditScreen from './src/screen/EditScreen';
 
 const Stack = createStackNavigator();
 
@@ -30,6 +31,7 @@ App = () => {
                 />
                 <Stack.Screen name="Create" component={CreateEmployeeScreen}  options={{...Myoptions,title:"Create"}}/>
                 <Stack.Screen name="Profile" component={ProfileScreen}  options={{...Myoptions,title:"Profile"}}/>
+                <Stack.Screen name="Edit" component={EditScreen} options={{...Myoptions,title:"Edit"}}/>
             </Stack.Navigator>
         </View>
     );

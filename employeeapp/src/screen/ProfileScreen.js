@@ -5,16 +5,26 @@ import {
     Text,
     Image,
     Linking,
-    Platform
+    Platform,
+    Alert
 } from 'react-native'
 import {LinearGradient} from 'expo-linear-gradient'
 import {Title, Card, Button} from 'react-native-paper'
 import {MaterialIcons, Entypo} from '@expo/vector-icons'
+import Delete from '../components/Delete'
+import Axios from 'axios'
 
-const ProfileScreen = (props) => {
+const ProfileScreen = ({route,navigation}) => {
 
-    const {id,name,email,phone,salary,position,image}=props.route.params.employee;
-   
+    const {
+        _id,
+        name,
+        email,
+        phone,
+        salary,
+        position,
+        image
+    } = route.params.employee;
     const openDial = () => {
         //for android and ios phone dialing
         if (Platform.OS === "android") {
@@ -23,6 +33,19 @@ const ProfileScreen = (props) => {
             Linking.openURL(`telprompt:${phone}`)
         }
     }
+
+
+    const deleteEmployee=()=>{
+        Axios({
+            method:"delete",
+            url:`http://192.168.1.21:3000/delete/${_id}`
+        })
+        .then((result)=>{
+            Alert.alert("Deleted sucessfully")
+        })
+    }
+
+
 
     return (
         <View style={styles.root}>
@@ -37,7 +60,7 @@ const ProfileScreen = (props) => {
             }}>
                 <Image
                     source={{
-                    uri: "https://images.unsplash.com/flagged/photo-1578848151039-b8916d7c1c34?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
+                    uri: image
                 }}
                     style={{
                     width: 150,
@@ -46,7 +69,7 @@ const ProfileScreen = (props) => {
                     marginTop: -75
                 }}/>
                 <Title>{name}</Title>
-            <Text>{position}</Text>
+                <Text>{position}</Text>
             </View>
             <Card
                 style={{
@@ -62,7 +85,7 @@ const ProfileScreen = (props) => {
                         fontSize: 18,
                         marginTop: 3,
                         marginLeft: 5
-                        }}>{email}</Text>
+                    }}>{email}</Text>
                 </View>
             </Card>
             <Card
@@ -79,7 +102,7 @@ const ProfileScreen = (props) => {
                         fontSize: 18,
                         marginTop: 3,
                         marginLeft: 5
-                        }}>{phone}</Text>
+                    }}>{phone}</Text>
                 </View>
             </Card>
             <Card style={{
@@ -94,7 +117,7 @@ const ProfileScreen = (props) => {
                         fontSize: 18,
                         marginTop: 3,
                         marginLeft: 5
-                    }}>10 lakh Rupees</Text>
+                    }}>{salary}</Text>
                 </View>
             </Card>
 
@@ -103,11 +126,18 @@ const ProfileScreen = (props) => {
                 flexDirection: "row",
                 justifyContent: "space-around"
             }}>
-                <Button icon="account-edit" theme={theme} mode="contained">Edit</Button>
-                <Button icon="delete" theme={theme} mode="contained">Delete</Button>
+                <Button icon="account-edit" theme={theme} mode="contained"
+                onPress={()=>{
+                   navigation.navigate('Edit',{employee:route.params.employee})
+                }}
+                >Edit</Button>
+                <Button
+                    icon="delete"
+                    theme={theme}
+                    mode="contained"
+                    onPress={() => deleteEmployee()}>Delete</Button>
             </View>
 
-         
         </View>
     )
 }
