@@ -5,12 +5,13 @@ import {
     FlatList,
     Image,
     Text,
-    ActivityIndicator
+    // ActivityIndicator
 } from 'react-native'
 import {Card, FAB} from 'react-native-paper'
 import {} from '@react-navigation/native'
 
-const HomeDetails = ({data, navigate,loading}) => {
+
+const HomeDetails = ({data, navigate,loading,fetchData}) => {
    
     return (
         <View style={{
@@ -30,14 +31,16 @@ const HomeDetails = ({data, navigate,loading}) => {
 
 
 {
-    loading ?
-    (
-        <ActivityIndicator size="large" color="#0000ff"/>
-    )
-    :
-    (
+    // loading ?
+    // (
+    //     <ActivityIndicator size="large" color="#0000ff"/>
+    // )
+    // :
+    // (
 
         <FlatList
+        refreshing={loading}
+        onRefresh={()=>fetchData}
         data={data}
         keyExtractor={datas => datas._id}
         // onRefresh={}
@@ -79,7 +82,7 @@ const HomeDetails = ({data, navigate,loading}) => {
             </Card>
         )
     }}/>
-    )
+    
 }
 
         </View>
